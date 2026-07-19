@@ -1,5 +1,6 @@
 const DEFAULT_SETTINGS = {
-  provider: "local",
+  provider: "server",
+  serverBaseUrl: "http://127.0.0.1:8787",
   openaiModel: "gpt-4.1-mini",
   openaiTtsModel: "gpt-4o-mini-tts",
   openaiTtsVoice: "coral",
@@ -8,10 +9,10 @@ const DEFAULT_SETTINGS = {
 };
 
 // The API key is a secret, so it lives in storage.local (never synced).
-const LOCAL_DEFAULTS = { openaiApiKey: "" };
+const LOCAL_DEFAULTS = { openaiApiKey: "", serverApiToken: "" };
 
-const syncFields = ["provider", "openaiModel", "openaiTtsModel", "openaiTtsVoice", "targetLanguage", "resumeAfterHover"];
-const localFields = ["openaiApiKey"];
+const syncFields = ["provider", "serverBaseUrl", "openaiModel", "openaiTtsModel", "openaiTtsVoice", "targetLanguage", "resumeAfterHover"];
+const localFields = ["openaiApiKey", "serverApiToken"];
 
 init();
 

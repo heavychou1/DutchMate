@@ -5,14 +5,15 @@ const DEFAULT_SETTINGS = {
   pauseOnHover: true,
   resumeAfterHover: false,
   replaceNativeSubtitles: true,
-  provider: "local",
+  provider: "server",
+  serverBaseUrl: "http://127.0.0.1:8787",
   openaiModel: "gpt-4.1-mini",
   openaiTtsModel: "gpt-4o-mini-tts",
   openaiTtsVoice: "coral"
 };
 
 // Secrets are kept in storage.local so they are never synced to the account.
-const LOCAL_DEFAULTS = { openaiApiKey: "" };
+const LOCAL_DEFAULTS = { openaiApiKey: "", serverApiToken: "" };
 
 const speechCache = new Map();
 
@@ -102,14 +103,54 @@ async function explainText(payload) {
   if (cached) return cached;
 
   let result;
-  if (settings.provider === "openai" && settings.openaiApiKey) {
+  if (settings.provider === "server" && settings.serverBaseUrl) {
+    result = await explainWithServer(payload, settings);
+  } else if (settings.provider === "openai" && settings.openaiApiKey) {
     result = await explainWithOpenAI(payload, settings);
   } else {
     result = explainLocally(payload, settings);
   }
 
-  await writeCachedExplanation(payload, settings, result);
+  if (!result.error) await writeCachedExplanation(payload, settings, result);
   return result;
+}
+
+async function explainWithServer(payload, settings) {
+  try {
+    const response = await fetch(joinServerUrl(settings.serverBaseUrl, "/api/explain"), {
+      method: "POST",
+      headers: serverHeaders(settings),
+      body: JSON.stringify({
+        videoId: payload.videoId || "",
+        videoTitle: payload.videoTitle || "",
+        targetLanguage: payload.targetLanguage || settings.targetLanguage || "English",
+        level: payload.explanationDepth || settings.explanationDepth || "simple",
+        explanationDepth: payload.explanationDepth || settings.explanationDepth || "simple",
+        targetWord: payload.targetWord || null,
+        subtitle: payload.subtitle || "",
+        previous: payload.previous || [],
+        next: payload.next || []
+      })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.detail || data.error || `Server request failed with HTTP ${response.status}.`);
+    return normalizeExplanation(data, data.source || "server");
+  } catch (error) {
+    const fallback = explainLocally(payload, settings);
+    fallback.note = `Server fallback: ${fallback.note}`;
+    fallback.error = String(error && error.message ? error.message : error);
+    return fallback;
+  }
+}
+
+function serverHeaders(settings) {
+  const headers = { "content-type": "application/json" };
+  if (settings.serverApiToken) headers["x-dutchmate-token"] = settings.serverApiToken;
+  return headers;
+}
+
+function joinServerUrl(baseUrl, path) {
+  return `${String(baseUrl || "").replace(/\/+$/, "")}${path}`;
 }
 
 async function explainWithOpenAI(payload, settings) {
@@ -328,7 +369,7 @@ async function writeCachedExplanation(payload, settings, result) {
 function cacheKey(payload, settings) {
   const target = payload.targetWord || "__line__";
   const text = payload.subtitle || "";
-  return `explain:v4:${settings.provider}:${settings.targetLanguage}:${settings.explanationDepth}:${target}:${text}`.slice(0, 750);
+  return `explain:v5:${settings.provider}:${settings.serverBaseUrl || ""}:${settings.targetLanguage}:${settings.explanationDepth}:${target}:${text}`.slice(0, 750);
 }
 
 async function generateSpeech(payload) {

@@ -29,7 +29,9 @@
     "https://www.npo.nl/*",
     "https://*.npoplayer.nl/*",
     "https://*.streamgate.nl/*",
-    "https://api.openai.com/*"
+    "https://api.openai.com/*",
+    "http://localhost/*",
+    "http://127.0.0.1/*"
   ],
   "permissions": ["storage"]
 }

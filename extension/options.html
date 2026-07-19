@@ -13,9 +13,20 @@
       <label>
         Translation provider
         <select id="provider">
+          <option value="server">DutchMate server</option>
           <option value="local">Local basic hints</option>
           <option value="openai">OpenAI</option>
         </select>
+      </label>
+
+      <label>
+        DutchMate server URL
+        <input id="serverBaseUrl" type="url" placeholder="http://127.0.0.1:8787">
+      </label>
+
+      <label>
+        DutchMate server token
+        <input id="serverApiToken" type="password" autocomplete="off">
       </label>
 
       <label>

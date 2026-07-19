@@ -6,7 +6,8 @@
     pauseOnHover: true,
     resumeAfterHover: false,
     replaceNativeSubtitles: true,
-    provider: "local",
+    provider: "server",
+    serverBaseUrl: "http://127.0.0.1:8787",
     openaiTtsModel: "gpt-4o-mini-tts",
     openaiTtsVoice: "coral"
   };
@@ -365,6 +366,8 @@
     const index = state.cues.indexOf(cue);
     const payload = {
       targetWord,
+      videoId: getVideoId(),
+      videoTitle: document.title || "",
       subtitle: cue.text,
       previous: state.cues.slice(Math.max(0, index - 3), index).map((item) => item.text),
       next: state.cues.slice(index + 1, index + 4).map((item) => item.text),
@@ -653,6 +656,11 @@
 
   function cleanPronunciationText(text) {
     return String(text || "").replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, "");
+  }
+
+  function getVideoId() {
+    const parts = location.pathname.split("/").filter(Boolean);
+    return parts[parts.length - 1] || "";
   }
 
   function scheduleHidePopup() {
