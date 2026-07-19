@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>NPO Dutch Study Options</title>
+    <link rel="stylesheet" href="src/options.css">
+  </head>
+  <body>
+    <main>
+      <h1>NPO Dutch Study Options</h1>
+      <p>Local mode gives basic word hints. OpenAI mode sends only the active subtitle and nearby subtitle context for better explanations.</p>
+
+      <label>
+        Translation provider
+        <select id="provider">
+          <option value="local">Local basic hints</option>
+          <option value="openai">OpenAI</option>
+        </select>
+      </label>
+
+      <label>
+        OpenAI API key
+        <input id="openaiApiKey" type="password" autocomplete="off">
+      </label>
+
+      <label>
+        OpenAI model
+        <input id="openaiModel" type="text" placeholder="gpt-4.1-mini">
+      </label>
+
+      <label>
+        OpenAI TTS model
+        <input id="openaiTtsModel" type="text" placeholder="gpt-4o-mini-tts">
+      </label>
+
+      <label>
+        OpenAI TTS voice
+        <select id="openaiTtsVoice">
+          <option value="coral">coral</option>
+          <option value="alloy">alloy</option>
+          <option value="ash">ash</option>
+          <option value="ballad">ballad</option>
+          <option value="echo">echo</option>
+          <option value="fable">fable</option>
+          <option value="nova">nova</option>
+          <option value="onyx">onyx</option>
+          <option value="sage">sage</option>
+          <option value="shimmer">shimmer</option>
+          <option value="verse">verse</option>
+          <option value="marin">marin</option>
+          <option value="cedar">cedar</option>
+        </select>
+      </label>
+
+      <label>
+        Target language
+        <input id="targetLanguage" type="text" placeholder="English">
+      </label>
+
+      <label class="check">
+        <input id="resumeAfterHover" type="checkbox">
+        Resume video automatically after hover
+      </label>
+
+      <button id="save" type="button">Save</button>
+      <span id="status"></span>
+    </main>
+    <script src="src/options.js"></script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "NPO Dutch Study",
+  "description": "Interactive Dutch subtitle study tools for NPO Start videos.",
+  "version": "0.1.0",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "NPO Dutch Study"
+  },
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://npo.nl/start/afspelen/*", "https://www.npo.nl/start/afspelen/*"],
+      "js": ["src/page-hook.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://npo.nl/start/afspelen/*", "https://www.npo.nl/start/afspelen/*"],
+      "css": ["src/content.css"],
+      "js": ["src/content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "host_permissions": [
+    "https://npo.nl/*",
+    "https://www.npo.nl/*",
+    "https://*.npoplayer.nl/*",
+    "https://*.streamgate.nl/*",
+    "https://api.openai.com/*"
+  ],
+  "permissions": ["storage"]
+}

@@ -1,0 +1,53 @@
+body {
+  margin: 0;
+  width: 300px;
+  background: #0f172a;
+  color: #f8fafc;
+  font: 14px/1.4 Arial, sans-serif;
+}
+
+main {
+  padding: 14px;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 16px;
+}
+
+label {
+  display: grid;
+  gap: 5px;
+  margin: 10px 0;
+}
+
+input[type="text"],
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  background: #111827;
+  color: #f8fafc;
+}
+
+.switch,
+.check {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+a {
+  display: inline-block;
+  margin-top: 10px;
+  color: #facc15;
+}

@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="src/popup.css">
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>NPO Dutch Study</h1>
+        <label class="switch">
+          <input id="enabled" type="checkbox">
+          <span>Enabled</span>
+        </label>
+      </header>
+
+      <label>
+        Target language
+        <input id="targetLanguage" type="text" placeholder="English">
+      </label>
+
+      <label>
+        Explanation depth
+        <select id="explanationDepth">
+          <option value="simple">Simple</option>
+          <option value="detailed">Detailed</option>
+        </select>
+      </label>
+
+      <label class="check">
+        <input id="pauseOnHover" type="checkbox">
+        Pause on hover
+      </label>
+
+      <label class="check">
+        <input id="replaceNativeSubtitles" type="checkbox">
+        Replace native subtitles
+      </label>
+
+      <a href="options.html" target="_blank">Translation settings</a>
+    </main>
+    <script src="src/popup.js"></script>
+  </body>
+</html>
